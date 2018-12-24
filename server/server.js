@@ -1,38 +1,91 @@
-var mongoose = require('mongoose');
+var express = require('express');
+var bodyParser = require('body-parser');
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/TodoApp');
+var { mongoose } = require('./db/mongoose.js');
+var { Todo } = require('./models/Todo.js');
+var { Users} = require('./models/Users.js');
+var { Exam } = require('./models/exam.js');
 
-var Todo = mongoose.model('Todo',{
-    text:{
-        type: String,
-        trim: true,
-        required: true,
-        minlength: 1
-    },
+
+var app = express();
+app.use(bodyParser.json());
+app.post('/todos', (req, res) => {
+
+    var todo = new Todo({
+        text: req.body.text
+    });
+
+    todo.save().then((docs) => {
+        res.send(docs)
+    }, (e) => {
+        res.status(400).send(e);
+    });
+
+
+});
+
+app.post('/users', (req, res) => {
+
+    var user = new Users({
+        email: req.body.email
+    });
+
+    user.save().then((docs) => {
+        res.send(docs)
+    }, (e) => {
+        res.status(400).send(e);
+    });
+
+
+});
+
+app.post('/exams', (req, res) => {
+
+    var exam = new Exam({
+        sem: req.body.sem
+    });
+
+    exam.save().then((docs) => {
+        res.send(docs)
+    }, (e) => {
+        res.status(400).send(e);
+    });
+
+
+});
+
+app.listen(3000, () => {
+
+    console.log('Server up on port 3000');
     
-    completed:{
-        type: Boolean,
-        default: false
-    },
-    
-    completedAt:{
-        type: Number,
-        default: null
-    }
 });
 
 
-var Users = mongoose.model('Users', {
 
-    email:{
-        type: String,
-        required: true,
-        minlength: 1,
-        trim: true
 
-    }
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // var newTodo = new Todo({
@@ -66,16 +119,14 @@ var Users = mongoose.model('Users', {
 
 // });
 
+// var newUser = new Users({
+//     email:'abc@abc.com  '
+// });
 
+// newUser.save().then((docs) => {
 
-var newUser = new Users({
-    email:'abc@abc.com  '
-});
-
-newUser.save().then((docs) => {
-
-    console.log('Saved User', docs);
+//     console.log('Saved User', docs);
     
-}, (e) => {
-    console.log('Unable to save User');
-});
+// }, (e) => {
+//     console.log('Unable to save User');
+// });
