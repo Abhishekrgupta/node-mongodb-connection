@@ -52,13 +52,23 @@ app.post('/exams', (req, res) => {
 
 app.get('/todos', (req, res) => {
 
-    Todo.find().then((todos) => {
+Todo.find().then((todos) => {
+    // {text: 'breakfast'}
         res.send({todos});
     }, (e) => {
         res.status(400).send(e);
     }); 
 });
 
+app.get('/users', (req, res) => {
+
+    Users.find().then((users) => {
+        // {text: 'breakfast'}
+            res.send({users});
+        }, (e) => {
+            res.status(400).send(e);
+        }); 
+    });
 
 
 app.listen(3000, () => {
