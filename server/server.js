@@ -1,10 +1,10 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var {ObjectID} = require('mongodb');
+var { ObjectID } = require('mongodb');
 
 var { mongoose } = require('./db/mongoose.js');
 var { Todo } = require('./models/Todo.js');
-var { Users} = require('./models/Users.js');
+var { Users } = require('./models/Users.js');
 var { Exam } = require('./models/exam.js');
 
 
@@ -56,28 +56,28 @@ app.post('/exams', (req, res) => {
 
 app.get('/todos', (req, res) => {
 
-Todo.find().then((todos) => {
-    // {text: 'breakfast'}
-        res.send({todos});
+    Todo.find().then((todos) => {
+        // {text: 'breakfast'}
+        res.send({ todos });
     }, (e) => {
         res.status(400).send(e);
-    }); 
+    });
 });
 
 app.get('/todos/:id', (req, res) => {
 
     var id = req.params.id;
-    if(!ObjectID.isValid(id)){
+    if (!ObjectID.isValid(id)) {
         return res.status(404).send('Id not valid');
     }
 
-    Todo.findById(id).then((todo) =>{
-        if(todo){
-            res.send({todo});
-        }else{
+    Todo.findById(id).then((todo) => {
+        if (todo) {
+            res.send({ todo });
+        } else {
             res.send('Todo not found');
         }
-    }).catch((e) =>{
+    }).catch((e) => {
         res.status(404).send();
     });
 });
@@ -87,21 +87,31 @@ app.get('/users', (req, res) => {
 
     Users.find().then((users) => {
         // {text: 'breakfast'}
-            res.send({users});
-        }, (e) => {
-            res.status(400).send(e);
-        }); 
+        res.send({ users });
+    }, (e) => {
+        res.status(400).send(e);
     });
+});
 
+
+app.get('/exams', (req, res) => {
+
+    Exam.find().then((sem) => {
+        // {text: 'breakfast'}
+        res.send({ sem });
+    }, (e) => {
+        res.status(400).send(e);
+    });
+});
 
 app.listen(port, () => {
 
     console.log(`Server up on port ${port}`);
-    
+
 });
 
 
-module.exports ={
+module.exports = {
     app
 }
 
@@ -141,10 +151,10 @@ module.exports ={
 // newTodo.save().then((docs) => {
 
 //     console.log('Saved Todo ',docs);
-    
+
 // }, (e) => {
 //     console.log('Unable to Save');
-    
+
 // });
 
 
@@ -169,7 +179,7 @@ module.exports ={
 // newUser.save().then((docs) => {
 
 //     console.log('Saved User', docs);
-    
+
 // }, (e) => {
 //     console.log('Unable to save User');
 // });
